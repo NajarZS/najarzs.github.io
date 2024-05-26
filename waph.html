@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>WAPH-ZaidNajar</title>
+    <link rel="stylesheet" href="https://waph-uc.github.io/style1.css">
+
+    <style>
+        .button {
+            background-color: #4CAF50; 
+            border: none;
+            color: white;
+            padding: 5px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .round { border-radius: 8px; }
+        #response, #getResponse, #postResponse, #ajaxResponse, #jokeResponse { 
+            background-color: #ff9800; 
+            padding: 5px;
+            margin-top: 10px;
+        } 
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container wrapper">
+        <div id="top">
+            <h1>Web Application Programming and Hacking</h1>
+            <h2>Front-end Web Development Lab</h2>
+            <h3>Instructor: Dr. Phu Phung</h3>
+        </div>
+        <div class="wrapper">
+            <div id="menubar">
+                <h3>Student: Zaid Najar</h3>
+            </div>
+            <div id="main">
+                <div id="email">
+                    <div id="email" onclick="showhideEmail()">Show my email</div>
+                </div>
+
+                <div id="headshot">
+                    <img src="images.jpeg" alt="My headshot" width="50">
+                </div>
+
+                <div id="digit-clock"></div>
+                <script>
+                    function displayTime() {
+                        document.getElementById('digit-clock').innerHTML = "Current time: " + new Date();
+                    }
+                    setInterval(displayTime, 500);
+                </script>
+
+                <canvas id="analog-clock" width="150" height="150" style="background-color:#999"></canvas>
+                <script src="https://waph-uc.github.io/clock.js"></script>
+                <script>
+                    var canvas = document.getElementById("analog-clock");
+                    var ctx = canvas.getContext("2d");
+                    var radius = canvas.height / 2;
+                    ctx.translate(radius, radius);
+                    radius = radius * 0.90;
+                    setInterval(drawClock, 1000);
+
+                    function drawClock() {
+                        drawFace(ctx, radius);
+                        drawNumbers(ctx, radius);
+                        drawTime(ctx, radius);
+                    }
+                </script>
+
+                <p>A simple HTML page</p>
+                Using the <a href="https://www.w3schools.com/html">W3Schools template</a>
+
+                <hr>
+                <b>Interaction with forms</b>
+                <div>
+                    <i>Form with an HTTP GET Request</i>
+                    <form id="getForm" onsubmit="sendGetRequest(event)">
+                        Your input: <input name="data" id="getData" onkeyup="console.log('You have pressed a key')">
+                        <input type="submit" value="Submit">
+                    </form>
+                    <div id="getResponse">Response from server:</div>
+                </div>
+                
+                <div>
+                    <i>Form with an HTTP POST Request</i>
+                    <form id="postForm" onsubmit="sendPostRequest(event)">
+                        Your input: <input name="data" id="postData" onkeyup="console.log('You have pressed a key')">
+                        <input type="submit" value="Submit">
+                    </form>
+                    <div id="postResponse">Response from server:</div>
+                </div>
+
+                <hr>
+                <b>Ajax requests</b>
+                <div>
+                    <i>Ajax requests</i><br>
+                    Your input: 
+                    <input name="data" id="ajaxData" onkeypress="console.log('You have pressed a key')">
+                    <input class="button round" type="button" value="Ajax Echo" onclick="getEcho()">
+                    <input class="button round" type="button" value="jQuery Ajax GET Echo" onclick="jQueryAjax()">
+                    <input class="button round" type="button" value="jQuery Ajax POST Echo" onclick="jQueryAjaxPost()">
+                    <input class="button round" type="button" value="Guess Age" onclick="guessAge($('#ajaxData').val())">
+                    <div id="ajaxResponse">Response from server:</div>
+                </div>
+
+                <hr>
+                <b>Experiments with JavaScript code</b><br>
+                <i>Inlined JavaScript</i>
+                <div id="date" onclick="document.getElementById('date').innerHTML = Date()">Click here to show Date()</div>
+
+                <script src="email.js"></script>
+                <script>
+                    var shown = false;
+                    function showhideEmail() {
+                        if (shown) {
+                            document.getElementById('email').innerHTML = "Show my email";
+                            shown = false;
+                        } else {
+                            var myemail = "<a href='mailto:najarzs@ucmail.uc.edu'>najarzs@ucmail.uc.edu</a>";
+                            document.getElementById('email').innerHTML = myemail;
+                            shown = true;
+                        }
+                    }
+
+                    function sendGetRequest(event) {
+                        event.preventDefault();
+                        var xhttp = new XMLHttpRequest();
+                        var data = document.getElementById('getData').value;
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                document.getElementById('getResponse').innerHTML = "Response from server: " + this.responseText;
+                            }
+                        };
+                        xhttp.open("GET", "echo.php?data=" + data, true);
+                        xhttp.send();
+                    }
+
+                    function sendPostRequest(event) {
+                        event.preventDefault();
+                        var xhttp = new XMLHttpRequest();
+                        var data = document.getElementById('postData').value;
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                document.getElementById('postResponse').innerHTML = "Response from server: " + this.responseText;
+                            }
+                        };
+                        xhttp.open("POST", "echo.php", true);
+                        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        xhttp.send("data=" + data);
+                    }
+
+                    function getEcho() {
+                        var input = document.getElementById("ajaxData").value;
+                        if (input.length == 0) {
+                            return;
+                        }
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                console.log("Received data=" + xhttp.responseText);
+                                document.getElementById("ajaxResponse").innerText = "Response from server: " + xhttp.responseText;
+                            }
+                        };
+                        xhttp.open("GET", "echo.php?data=" + input, true);
+                        xhttp.send();
+                        document.getElementById("ajaxData").value = "";
+                    }
+
+                    function jQueryAjax() {
+                        var input = $("#ajaxData").val();
+                        if (input.length == 0) return;
+                        $.get("echo.php?data=" + input, function(result) {
+                            $("#ajaxResponse").html("Response from server: " + result);
+                        });
+                        $("#ajaxData").val("");
+                    }
+
+                    function jQueryAjaxPost() {
+                        var input = $("#ajaxData").val();
+                        if (input.length == 0) return;
+                        $.post("echo.php", { data: input }, function(result) {
+                            $("#ajaxResponse").html("Response from server: " + result);
+                        });
+                        $("#ajaxData").val("");
+                    }
+
+                    function getJoke() {
+                        $.get("https://v2.jokeapi.dev/joke/Programming?type=single", function(result) {
+                            console.log("From jokeAPI: " + JSON.stringify(result));  
+                            $("#jokeResponse").html(result.joke);  
+                        });
+                    }
+
+                    async function guessAge(name) {
+                        const response = await fetch(`https://api.agify.io/?name=${name}`);
+                        const result = await response.json();
+                        $("#ajaxResponse").html(`Hi ${name}, your age should be ${result.age}`);
+                    }
+                </script>
+                
+                <hr>
+                <b>Random Programming Joke</b><br>
+                <button class="button round" onclick="getJoke()">Get a Joke</button>
+                <div id="jokeResponse">Joke will appear here</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
