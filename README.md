@@ -6,6 +6,8 @@
 Name: Zaid Najar 
 Instructor: Dr. Phu Phung 
 Email: najarzs@mail.uc.edu
+
+
 ![image](https://github.com/NajarZS/najarzs.github.io/assets/169232307/ac395869-1294-4a44-8f74-a87156c15fe6)
 
 Repository link: https://github.com/NajarZS/najarzs.github.io
